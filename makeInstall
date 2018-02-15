@@ -1,0 +1,28 @@
+#Script to make an installer script for a git repository
+#Written By Jamie Cronin
+
+if  [ ! $1 ]; then
+	echo Please enter a git URL
+    exit
+elif [ "$(echo $1 | rev | cut -c -4 | rev)" != ".git" ]; then
+    echo Please enter a VALID git URL
+    exit
+fi
+URL=$1
+c="$(basename $URL)"
+repoName="$(echo $c | rev | cut -c 5- | rev)"
+cat <<EOF > Install.sh
+#This Installer Script was generated with makeInstall
+rm -r $repoName
+git clone $URL
+cd $repoName
+rm ./LICENSE
+rm ./README.md
+sudo chmod 777 ./*
+sudo cp -f ./* /usr/bin/
+cd ..
+rm -r ./$repoName
+echo
+echo $repoName has been successfully installed!
+EOF
+chmod 777 Install.sh
