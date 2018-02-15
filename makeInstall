@@ -17,7 +17,9 @@ installerName=$nameStart$repoName$nameEnd
 cat <<EOF > $installerName
 #This Installer Script was generated with makeInstall
 #https://github.com/jcc620/makeInstall/
-rm -r $repoName
+RndInt="$(echo $(( ( RANDOM % 1000 )  + 1 )))"
+mkdir Tmp$RndInt
+cd Tmp$RndInt
 git clone $URL
 cd $repoName
 rm ./LICENSE
@@ -25,7 +27,8 @@ rm ./README.md
 sudo chmod 777 ./*
 sudo cp -f ./* /usr/bin/
 cd ..
-rm -r ./$repoName
+cd ..
+rm -r ./Tmp$RndInt
 echo
 echo $repoName has been successfully installed!
 EOF
