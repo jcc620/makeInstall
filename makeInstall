@@ -11,8 +11,12 @@ fi
 URL=$1
 c="$(basename $URL)"
 repoName="$(echo $c | rev | cut -c 5- | rev)"
-cat <<EOF > Install.sh
+nameStart=Install
+nameEnd=.sh
+installerName=$nameStart$repoName$nameEnd
+cat <<EOF > $installerName
 #This Installer Script was generated with makeInstall
+#https://github.com/jcc620/makeInstall/
 rm -r $repoName
 git clone $URL
 cd $repoName
@@ -25,4 +29,4 @@ rm -r ./$repoName
 echo
 echo $repoName has been successfully installed!
 EOF
-chmod 777 Install.sh
+chmod 777 $installerName
